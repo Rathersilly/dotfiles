@@ -1,8 +1,35 @@
 colorscheme jellybeans
+"set lines=150 columns=100
 set number
 
+"----vim-plug plugin manager stuff
+call plug#begin()
+Plug 'scrooloose/nerdtree'
+call plug#end()
+"----
 
+" resize window CTRL+(h|j|k|l)
+nnoremap <C-J> <C-W>-
+nnoremap <C-K> <C-W>+
+nnoremap <C-L> <C-W>>
+nnoremap <C-H> <C-W><
 
+"windows split in a more harmonious way
+set splitbelow
+set splitright
+
+" Ruby stuff: from janjiss.com's rails vimrc file 
+" ================
+syntax on                 " Enable syntax highlighting  
+filetype plugin indent on " Enable filetype-specific indenting and plugins
+
+augroup myfiletypes  
+    " Clear old autocmds in group
+    autocmd!
+    " autoindent with two spaces, always expand tabs
+    autocmd FileType ruby,eruby,yaml,markdown set ai sw=2 sts=2 et
+augroup END  
+" ================
 
 
 " ===== Seeing Is Believing =====
@@ -66,3 +93,15 @@ augroup seeingIsBelievingSettings
   autocmd FileType ruby vmap <buffer> <Leader>v :call SibCleanAnnotations("'<,'>")<CR>;
 augroup END
 
+"ALEFix
+let g:ale_fixers = ['rubocop']
+
+"""""""""The following is for generating ALE vim help files
+
+" Put these lines at the very end of your vimrc file.
+" " Load all plugins now.
+" " Plugins need to be added to runtimepath before helptags can be generated.
+packloadall
+" " Load all of the helptags now, after plugins have been loaded.
+" " All messages and errors will be ignored.
+silent! helptags ALL

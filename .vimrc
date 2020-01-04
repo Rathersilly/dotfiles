@@ -4,20 +4,21 @@
 "
 "
 
-:set lines=150 columns=100
-:colorscheme jellybeans
+
+set lines=150 columns=100
+colorscheme jellybeans
 
 " inoremap = in insert mode, non-recursively map button(s) to other button(s)
 inoremap jk <Esc>
 inoremap kj <Esc>
 inoremap jj <Esc>
-inoremap fd <Esc>
-inoremap df <Esc>
-inoremap uu <Esc>
+"inoremap fd <Esc>
+"inoremap df <Esc>
+"inoremap uu <Esc>
 
 inoremap <Esc> <Esc>`^
 
-:fixdel
+":fixdel
 
 " a legacy Software Flow Control thing
 " XON/XOFF
@@ -80,16 +81,16 @@ set mouse=a
 set shortmess=a
 
 " Enable seeing-is-believing mappings only for Ruby
-augroup seeingIsBelievingSettings
-  autocmd!
-
-  autocmd FileType ruby nmap <buffer> <Enter> <Plug>(seeing-is-believing-mark-and-run)
-  autocmd FileType ruby xmap <buffer> <Enter> <Plug>(seeing-is-believing-mark-and-run)
-
-  autocmd FileType ruby nmap <buffer> <F4> <Plug>(seeing-is-believing-mark)
-  autocmd FileType ruby xmap <buffer> <F4> <Plug>(seeing-is-believing-mark)
-  autocmd FileType ruby imap <buffer> <F4> <Plug>(seeing-is-believing-mark)
-
-  autocmd FileType ruby nmap <buffer> <F5> <Plug>(seeing-is-believing-run)
-  autocmd FileType ruby imap <buffer> <F5> <Plug>(seeing-is-believing-run)
-augroup END
+"augroup seeingIsBelievingSettings
+"  autocmd!
+"
+"  autocmd FileType ruby nmap <buffer> <Enter> <Plug>(seeing-is-believing-mark-and-run)
+"  autocmd FileType ruby xmap <buffer> <Enter> <Plug>(seeing-is-believing-mark-and-run)
+"
+"  autocmd FileType ruby nmap <buffer> <F4> <Plug>(seeing-is-believing-mark)
+"  autocmd FileType ruby xmap <buffer> <F4> <Plug>(seeing-is-believing-mark)
+"  autocmd FileType ruby imap <buffer> <F4> <Plug>(seeing-is-believing-mark)
+"
+"  autocmd FileType ruby nmap <buffer> <F5> <Plug>(seeing-is-believing-run)
+"  autocmd FileType ruby imap <buffer> <F5> <Plug>(seeing-is-believing-run)
+"augroup END
