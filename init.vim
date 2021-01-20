@@ -1,10 +1,17 @@
 colorscheme jellybeans
 "set lines=150 columns=100
 set number
+set tabstop=4
+set shiftwidth=4
+set foldcolumn=1
 
+:command AF ALEFix
+:command AD ALEDisable
+:command AE ALEEnable
 "----vim-plug plugin manager stuff
-call plug#begin()
-Plug 'scrooloose/nerdtree'
+call plug#begin('~/.config/nvim/plugged')
+	Plug 'preservim/nerdtree'
+	Plug 'dense-analysis/ale'
 call plug#end()
 "----
 
@@ -13,6 +20,9 @@ nnoremap <C-J> <C-W>-
 nnoremap <C-K> <C-W>+
 nnoremap <C-L> <C-W>>
 nnoremap <C-H> <C-W><
+
+"remap exit terminal mode
+tnoremap <Esc> <C-\><C-n>
 
 "windows split in a more harmonious way
 set splitbelow
@@ -35,6 +45,8 @@ augroup END
 " ===== Seeing Is Believing =====
 " Assumes you have a Ruby with SiB available in the PATH
 " If it doesn't work, you may need to `gem install seeing_is_believing`
+
+" <Leader> is \ by default BTW
 
 function! WithoutChangingCursor(fn)
   let cursor_pos     = getpos('.')
