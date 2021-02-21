@@ -4,6 +4,7 @@ set number
 set tabstop=4
 set shiftwidth=4
 set foldcolumn=1
+set encoding=UTF-8
 
 " remap leader to space
 :let mapleader = ";"
@@ -25,6 +26,8 @@ call plug#begin('~/.config/nvim/plugged')
 	Plug 'preservim/nerdtree'
 	Plug 'dense-analysis/ale'
 	Plug 'sukima/xmledit'
+	Plug 'her/synicons.vim'
+	Plug 'ryanoasis/vim-devicons'
 call plug#end()
 "----
 
