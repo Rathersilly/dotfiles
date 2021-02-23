@@ -17,6 +17,19 @@ nnoremap <Leader>r :!ruby %<cr>
 " put semicolon at end of line without moving cursor
 nnoremap <Leader>; m'A;<ESC>`'
 
+" tab is now for switching windows. S-tab switches to Nerdtree and back
+" (my first ever vim function - im pretty stoked ngl)
+nnoremap <tab> <C-W>
+nnoremap <tab><tab> <C-W>w
+
+nnoremap <silent> <S-tab> :call NerdOrPrev()<cr>
+function! NerdOrPrev()
+	if winnr() == 1
+		exe "wincmd p"
+	else
+		exe "1wincmd w"
+	endif
+endfunction
 
 :command AF ALEFix
 :command AD ALEDisable
@@ -56,8 +69,8 @@ nnoremap [t :tabp<cr>
 " ----------------------------------------------------------------------------
 " <tab> / <s-tab> | Circular windows navigation
 " ----------------------------------------------------------------------------
-nnoremap <tab>   <c-w>w
-nnoremap <S-tab> <c-w>W
+"nnoremap <tab>   <c-w>w
+"nnoremap <S-tab> <c-w>W
 "
 " Jump list (to newer position) - necesary after remapping tab
 nnoremap <C-p> <C-i>
