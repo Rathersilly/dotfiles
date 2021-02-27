@@ -13,6 +13,7 @@ noremap <Space> .
 " clear search highlighting
 nnoremap <Leader>/ :noh<cr>
 " run ruby program
+" probably remap this to \m and depend on filetype - same cmd for make
 nnoremap <Leader>r :!ruby %<cr>
 " put semicolon at end of line without moving cursor
 nnoremap <Leader>; m'A;<ESC>`'
@@ -151,7 +152,7 @@ else
 endif
 
 " nnoremap <silent> <Leader><Leader> :Files<CR>
-nnoremap <silent> <expr> <Leader><Leader> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
+nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
 " nnoremap <silent> <Leader>C        :Colors<CR>
 nnoremap <silent> <Leader>b        :Buffers<CR>
 nnoremap <silent> <Leader>l        :Lines<CR>
