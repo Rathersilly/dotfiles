@@ -4,38 +4,12 @@ set number
 set tabstop=4
 set shiftwidth=4
 set foldcolumn=1
-set encoding=UTF-8
 
 " one or both of these are to stop garbage chars from displaying
 " in xfce terminal.
 " see https://github.com/neovim/neovim/issues/6154
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
 :set guicursor=
-
-" remap leader to space
-:let mapleader = ";"
-noremap . ;
-noremap <Space> .
-" clear search highlighting
-nnoremap <Leader>/ :noh<cr>
-" run ruby program
-nnoremap <Leader>r :!ruby %<cr>
-" put semicolon at end of line without moving cursor
-nnoremap <Leader>; m'A;<ESC>`'
-
-" tab is now for switching windows. S-tab switches to Nerdtree and back
-" (my first ever vim function - im pretty stoked ngl)
-nnoremap <tab> <C-W>
-nnoremap <tab><tab> <C-W>w
-
-nnoremap <silent> <S-tab> :call NerdOrPrev()<cr>
-function! NerdOrPrev()
-	if winnr() == 1
-		exe "wincmd p"
-	else
-		exe "1wincmd w"
-	endif
-endfunction
 
 :command AF ALEFix
 :command AD ALEDisable
@@ -44,60 +18,14 @@ endfunction
 call plug#begin('~/.config/nvim/plugged')
 	Plug 'preservim/nerdtree'
 	Plug 'dense-analysis/ale'
-	Plug 'sukima/xmledit'
-	Plug 'her/synicons.vim'
-	Plug 'ryanoasis/vim-devicons'
 call plug#end()
 "----
 
 " resize window CTRL+(h|j|k|l)
-" nnoremap <C-J> <C-W>-
-" nnoremap <C-K> <C-W>+
-" nnoremap <C-L> <C-W>>
-" nnoremap <C-H> <C-W><
-
-" https://github.com/junegunn/dotfiles/blob/master/vimrc
-noremap <C-F> <C-D>
-noremap <C-B> <C-U>
-
-" ----------------------------------------------------------------------------
-" Buffers
-" ----------------------------------------------------------------------------
-nnoremap ]b :bnext<cr>
-nnoremap [b :bprev<cr>
-
-" ----------------------------------------------------------------------------
-" Tabs
-" ----------------------------------------------------------------------------
-nnoremap ]t :tabn<cr>
-nnoremap [t :tabp<cr>
-
-" ----------------------------------------------------------------------------
-" <tab> / <s-tab> | Circular windows navigation
-" ----------------------------------------------------------------------------
-"nnoremap <tab>   <c-w>w
-"nnoremap <S-tab> <c-w>W
-"
-" Jump list (to newer position) - necesary after remapping tab
-nnoremap <C-p> <C-i>
-
-" <leader>n | NERD Tree
-nnoremap <leader>n :NERDTreeToggle<cr>
-
-" ----------------------------------------------------------------------------
-" Moving lines
-" ----------------------------------------------------------------------------
-nnoremap <silent> <C-k> :move-2<cr>
-nnoremap <silent> <C-j> :move+<cr>
-nnoremap <silent> <C-h> <<
-nnoremap <silent> <C-l> >>
-
-" Make Y behave like other capitals
-nnoremap Y y$
-
-" mouse
-silent! set ttymouse=xterm2
-set mouse=a
+nnoremap <C-J> <C-W>-
+nnoremap <C-K> <C-W>+
+nnoremap <C-L> <C-W>>
+nnoremap <C-H> <C-W><
 
 "remap exit terminal mode
 tnoremap <Esc> <C-\><C-n>
@@ -172,9 +100,9 @@ endfun
 augroup seeingIsBelievingSettings
   " clear the settings if they already exist (so we don't run them twice)
   autocmd!
-  autocmd FileType ruby nmap <buffer> <Leader>z :call SibAnnotateAll("%")<CR>;
-  autocmd FileType ruby nmap <buffer> <Leader>x :call SibAnnotateMarked("%")<CR>;
-  autocmd FileType ruby nmap <buffer> <Leader>c :call SibCleanAnnotations("%")<CR>;
+  autocmd FileType ruby nmap <buffer> <Leader>b :call SibAnnotateAll("%")<CR>;
+  autocmd FileType ruby nmap <buffer> <Leader>n :call SibAnnotateMarked("%")<CR>;
+  autocmd FileType ruby nmap <buffer> <Leader>v :call SibCleanAnnotations("%")<CR>;
   autocmd FileType ruby nmap <buffer> <Enter>   :call SibToggleMark()<CR>;
   autocmd FileType ruby vmap <buffer> <Enter>   :call SibToggleMark()<CR>;
 
