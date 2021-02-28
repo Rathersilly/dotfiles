@@ -19,6 +19,7 @@ noremap <Space> .
 " clear search highlighting
 nnoremap <Leader>/ :noh<cr>
 " run ruby program
+" probably remap this to \m and depend on filetype - same cmd for make
 nnoremap <Leader>r :!ruby %<cr>
 " put semicolon at end of line without moving cursor
 nnoremap <Leader>; m'A;<ESC>`'
@@ -27,23 +28,53 @@ nnoremap <Leader>; m'A;<ESC>`'
 " (my first ever vim function - im pretty stoked ngl)
 nnoremap <tab> <C-W>
 nnoremap <tab><tab> <C-W>w
+" Jump list (to newer position) - necesary after remapping tab
+nnoremap <C-p> <C-i>
 
-nnoremap <silent> <S-tab> :call NerdOrPrev()<cr>
-function! NerdOrPrev()
-	if winnr() == 1
-		exe "wincmd p"
-	else
-		exe "1wincmd w"
-	endif
-endfunction
+" ----------------------------------------------------------------------------
+" https://github.com/zenbro/dotfiles/blob/master/.nvimrc
+" Switch between tabs
+nmap <leader>1 1gt
+nmap <leader>2 2gt
+nmap <leader>3 3gt
+nmap <leader>4 4gt
+nmap <leader>5 5gt
+nmap <leader>6 6gt
+nmap <leader>7 7gt
+nmap <leader>8 8gt
+nmap <leader>9 9gt
+" If split in given direction exists - jump, else create new split
+function! JumpOrOpenNewSplit(key, cmd, fzf) " {{{
+  let current_window = winnr()
+  execute 'wincmd' a:key
+  if current_window == winnr()
+    execute a:cmd
+    if a:fzf
+      Files
+    endif
+  else
+    if a:fzf
+      Files
+    endif
+  endif
+endfunction " }}}
+nnoremap <silent> <Leader>hh :call JumpOrOpenNewSplit('h', ':leftabove vsplit', 0)<CR>
+nnoremap <silent> <Leader>ll :call JumpOrOpenNewSplit('l', ':rightbelow vsplit', 0)<CR>
+nnoremap <silent> <Leader>kk :call JumpOrOpenNewSplit('k', ':leftabove split', 0)<CR>
+nnoremap <silent> <Leader>jj :call JumpOrOpenNewSplit('j', ':rightbelow split', 0)<CR>
+" ----------------------------------------------------------------------------
 
-:command AF ALEFix
-:command AD ALEDisable
-:command AE ALEEnable
 "----vim-plug plugin manager stuff
 call plug#begin('~/.config/nvim/plugged')
+	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+	Plug 'junegunn/fzf.vim'
 	Plug 'preservim/nerdtree'
+		" Shift tab switches between left window (ie nerdtree) and prev window
+		nnoremap <expr> <s-tab> winnr() == 1 ? "\<c-w>p" : "\<c-w>t>"
 	Plug 'dense-analysis/ale'
+		:command AF ALEFix
+		:command AD ALEDisable
+		:command AE ALEEnable
 	Plug 'sukima/xmledit'
 	Plug 'her/synicons.vim'
 	Plug 'ryanoasis/vim-devicons'
@@ -56,7 +87,10 @@ call plug#end()
 " nnoremap <C-L> <C-W>>
 " nnoremap <C-H> <C-W><
 
+" ----------------------------------------------------------------------------
+" From Junegunn:
 " https://github.com/junegunn/dotfiles/blob/master/vimrc
+" ----------------------------------------------------------------------------
 noremap <C-F> <C-D>
 noremap <C-B> <C-U>
 
@@ -71,15 +105,6 @@ nnoremap [b :bprev<cr>
 " ----------------------------------------------------------------------------
 nnoremap ]t :tabn<cr>
 nnoremap [t :tabp<cr>
-
-" ----------------------------------------------------------------------------
-" <tab> / <s-tab> | Circular windows navigation
-" ----------------------------------------------------------------------------
-"nnoremap <tab>   <c-w>w
-"nnoremap <S-tab> <c-w>W
-"
-" Jump list (to newer position) - necesary after remapping tab
-nnoremap <C-p> <C-i>
 
 " <leader>n | NERD Tree
 nnoremap <leader>n :NERDTreeToggle<cr>
@@ -98,6 +123,100 @@ nnoremap Y y$
 " mouse
 silent! set ttymouse=xterm2
 set mouse=a
+" }}}
+" ============================================================================
+" FZF {{{
+" ============================================================================
+
+let $FZF_DEFAULT_OPTS .= ' --inline-info'
+
+" All files
+command! -nargs=? -complete=dir AF
+  \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
+  \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
+  \ })))
+
+" let g:fzf_colors =
+" \ { 'fg':      ['fg', 'Normal'],
+"   \ 'bg':      ['bg', 'Normal'],
+"   \ 'hl':      ['fg', 'Comment'],
+"   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+"   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+"   \ 'hl+':     ['fg', 'Statement'],
+"   \ 'info':    ['fg', 'PreProc'],
+"   \ 'border':  ['fg', 'Ignore'],
+"   \ 'prompt':  ['fg', 'Conditional'],
+"   \ 'pointer': ['fg', 'Exception'],
+"   \ 'marker':  ['fg', 'Keyword'],
+"   \ 'spinner': ['fg', 'Label'],
+"   \ 'header':  ['fg', 'Comment'] }
+
+if exists('$TMUX')
+  let g:fzf_layout = { 'tmux': '-p90%,60%' }
+else
+  let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+endif
+
+" nnoremap <silent> <Leader><Leader> :Files<CR>
+nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
+" nnoremap <silent> <Leader>C        :Colors<CR>
+nnoremap <silent> <Leader>b        :Buffers<CR>
+nnoremap <silent> <Leader>l        :Lines<CR>
+nnoremap <silent> <Leader>ag       :Ag <C-R><C-W><CR>
+nnoremap <silent> <Leader>AG       :Ag <C-R><C-A><CR>
+xnoremap <silent> <Leader>ag       y:Ag <C-R>"<CR>
+nnoremap <silent> <Leader>`        :Marks<CR>
+
+" I'm gonna remap the fzf open file hotkeys to nerdtree hotkeys for simplicity
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-i': 'split',
+  \ 'ctrl-s': 'vsplit' }
+
+" nnoremap <silent> q: :History:<CR>
+" nnoremap <silent> q/ :History/<CR>
+
+inoremap <expr> <c-x><c-t> fzf#complete('tmuxwords.rb --all-but-current --scroll 499 --min 5')
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+inoremap <expr> <c-x><c-d> fzf#vim#complete#path('blsd')
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+" nmap <leader><tab> <plug>(fzf-maps-n)
+" xmap <leader><tab> <plug>(fzf-maps-x)
+" omap <leader><tab> <plug>(fzf-maps-o)
+
+function! s:plug_help_sink(line)
+  let dir = g:plugs[a:line].dir
+  for pat in ['doc/*.txt', 'README.md']
+    let match = get(split(globpath(dir, pat), "\n"), 0, '')
+    if len(match)
+      execute 'tabedit' match
+      return
+    endif
+  endfor
+  tabnew
+  execute 'Explore' dir
+endfunction
+
+command! PlugHelp call fzf#run(fzf#wrap({
+  \ 'source': sort(keys(g:plugs)),
+  \ 'sink':   function('s:plug_help_sink')}))
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let options = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  let options = fzf#vim#with_preview(options, 'right', 'ctrl-/')
+  call fzf#vim#grep(initial_command, 1, options, a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+" ============================================================================
+" end of junegunn's stuff }}}
+" ============================================================================
 
 "remap exit terminal mode
 tnoremap <Esc> <C-\><C-n>
