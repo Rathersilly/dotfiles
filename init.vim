@@ -5,6 +5,7 @@ set tabstop=4
 set shiftwidth=4
 set foldcolumn=1
 set encoding=UTF-8
+set timeoutlen=500
 
 " one or both of these are to stop garbage chars from displaying
 " in xfce terminal.
@@ -13,11 +14,13 @@ let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
 :set guicursor=
 
 " remap leader to space
-:let mapleader = ";"
+nnoremap <Space> <Nop>
+:let mapleader=" "
 noremap . ;
-noremap <Space> .
+noremap ; .
 " clear search highlighting
 nnoremap <Leader>/ :noh<cr>
+nnoremap <Leader>/ :set hls!<cr>
 " run ruby program
 " probably remap this to \m and depend on filetype - same cmd for make
 nnoremap <Leader>r :!ruby %<cr>
@@ -68,13 +71,17 @@ nnoremap <silent> <Leader>jj :call JumpOrOpenNewSplit('j', ':rightbelow split', 
 call plug#begin('~/.config/nvim/plugged')
 	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 	Plug 'junegunn/fzf.vim'
+
 	Plug 'preservim/nerdtree'
 		" Shift tab switches between left window (ie nerdtree) and prev window
+		nnoremap <expr> <s-tab> winnr() == 1 ? "\<c-w>p" : "\<c-w>t>"
 		nnoremap <expr> <s-tab> winnr() == 1 ? "\<c-w>p" : "\<c-w>t>"
 	Plug 'dense-analysis/ale'
 		:command AF ALEFix
 		:command AD ALEDisable
 		:command AE ALEEnable
+	Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
+
 	Plug 'sukima/xmledit'
 	Plug 'her/synicons.vim'
 	Plug 'ryanoasis/vim-devicons'
@@ -131,10 +138,10 @@ set mouse=a
 let $FZF_DEFAULT_OPTS .= ' --inline-info'
 
 " All files
-command! -nargs=? -complete=dir AF
-  \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
-  \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
-  \ })))
+" command! -nargs=? -complete=dir AF
+"   \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
+"   \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
+"   \ })))
 
 " let g:fzf_colors =
 " \ { 'fg':      ['fg', 'Normal'],
@@ -166,6 +173,7 @@ nnoremap <silent> <Leader>ag       :Ag <C-R><C-W><CR>
 nnoremap <silent> <Leader>AG       :Ag <C-R><C-A><CR>
 xnoremap <silent> <Leader>ag       y:Ag <C-R>"<CR>
 nnoremap <silent> <Leader>`        :Marks<CR>
+nnoremap <silent> <Leader>g        :Rg<CR>
 
 " I'm gonna remap the fzf open file hotkeys to nerdtree hotkeys for simplicity
 let g:fzf_action = {
