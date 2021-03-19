@@ -1,11 +1,15 @@
 colorscheme jellybeans
 "set lines=150 columns=100
-set number
 set tabstop=4
 set shiftwidth=4
 set foldcolumn=1
 set encoding=UTF-8
-set timeoutlen=500
+set timeoutlen=500				
+set guicursor=					" cursor is block, even in ins mode
+set hidden 						" can navigate away from unsaved file
+set nowrap
+set nohlsearch
+set scrolloff=8
 
 " remap leader to space
 nnoremap <Space> <Nop>
@@ -27,6 +31,15 @@ nnoremap <tab> <C-W>
 nnoremap <tab><tab> <C-W>w
 " Jump list (to newer position) - necesary after remapping tab
 nnoremap <C-p> <C-i>
+
+"set up line numbers
+:set number relativenumber
+
+:augroup numbertoggle
+:  autocmd!
+:  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+:  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+:augroup END
 
 " ----------------------------------------------------------------------------
 " https://github.com/zenbro/dotfiles/blob/master/.nvimrc
@@ -71,9 +84,9 @@ call plug#begin('~/.config/nvim/plugged')
 		nnoremap <expr> <s-tab> winnr() == 1 ? "\<c-w>p" : "\<c-w>t>"
 		nnoremap <expr> <s-tab> winnr() == 1 ? "\<c-w>p" : "\<c-w>t>"
 	Plug 'dense-analysis/ale'
-		:command AF ALEFix
-		:command AD ALEDisable
-		:command AE ALEEnable
+		:command! AD ALEDisable
+		:command! AE ALEEnable
+		:command! AF ALEFix
 	Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
 
 	Plug 'sukima/xmledit'
