@@ -9,7 +9,7 @@ set guicursor=					" cursor is block, even in ins mode
 set hidden 						" can navigate away from unsaved file
 set nowrap
 set nohlsearch
-set scrolloff=8
+set scrolloff=4
 
 " remap leader to space
 nnoremap <Space> <Nop>
