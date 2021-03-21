@@ -1,5 +1,5 @@
+" Welcome!
 colorscheme jellybeans
-"set lines=150 columns=100
 set tabstop=4
 set shiftwidth=4
 set foldcolumn=1
@@ -11,25 +11,20 @@ set nowrap
 set nohlsearch
 set scrolloff=4
 
-" one or both of these are to stop garbage chars from displaying
-" in xfce terminal.
-" see https://github.com/neovim/neovim/issues/6154
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 0
-:set guicursor=
-
 " remap leader to space
 nnoremap <Space> <Nop>
 :let mapleader=" "
 noremap . ;
 noremap ; .
 " clear search highlighting
-nnoremap <Leader>/ :noh<cr>
 nnoremap <Leader>/ :set hls!<cr>
 " run ruby program
 " probably remap this to \m and depend on filetype - same cmd for make
 nnoremap <Leader>r :!ruby %<cr>
 " put semicolon at end of line without moving cursor
 nnoremap <Leader>; m'A;<ESC>`'
+"remap exit terminal mode
+tnoremap <Esc> <C-\><C-n>
 
 " tab is now for switching windows. S-tab switches to Nerdtree and back
 " (my first ever vim function - im pretty stoked ngl)
@@ -40,12 +35,15 @@ nnoremap <C-p> <C-i>
 
 "set up line numbers
 :set number relativenumber
-
 :augroup numbertoggle
 :  autocmd!
 :  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
 :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 :augroup END
+
+"windows split in a more harmonious way
+set splitbelow
+set splitright
 
 " ----------------------------------------------------------------------------
 " https://github.com/zenbro/dotfiles/blob/master/.nvimrc
@@ -100,12 +98,6 @@ call plug#begin('~/.config/nvim/plugged')
 	Plug 'ryanoasis/vim-devicons'
 call plug#end()
 "----
-
-" resize window CTRL+(h|j|k|l)
-" nnoremap <C-J> <C-W>-
-" nnoremap <C-K> <C-W>+
-" nnoremap <C-L> <C-W>>
-" nnoremap <C-H> <C-W><
 
 " ----------------------------------------------------------------------------
 " From Junegunn:
@@ -201,8 +193,8 @@ inoremap <expr> <c-x><c-t> fzf#complete('tmuxwords.rb --all-but-current --scroll
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 inoremap <expr> <c-x><c-d> fzf#vim#complete#path('blsd')
-imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 
 " nmap <leader><tab> <plug>(fzf-maps-n)
 " xmap <leader><tab> <plug>(fzf-maps-x)
@@ -239,13 +231,6 @@ command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 " end of junegunn's stuff }}}
 " ============================================================================
 
-"remap exit terminal mode
-tnoremap <Esc> <C-\><C-n>
-
-"windows split in a more harmonious way
-set splitbelow
-set splitright
-
 " Ruby stuff: from janjiss.com's rails vimrc file 
 " ================
 syntax on                 " Enable syntax highlighting  
@@ -258,7 +243,6 @@ augroup myfiletypes
     autocmd FileType ruby,eruby,yaml,markdown set ai sw=2 sts=2 et
 augroup END  
 " ================
-
 
 " ===== Seeing Is Believing =====
 " Assumes you have a Ruby with SiB available in the PATH
