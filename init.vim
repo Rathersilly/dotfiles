@@ -14,22 +14,34 @@ set scrolloff=4
 " remap leader to space
 nnoremap <Space> <Nop>
 :let mapleader=" "
+
+packadd termdebug
+let g:termdebug_wide=1
+nnoremap <Leader>t  :Termdebug a.out<cr>A
+
 noremap . ;
 noremap ; .
 " clear search highlighting
 nnoremap <Leader>/ :set hls!<cr>
+
 " run ruby program
 " probably remap this to \m and depend on filetype - same cmd for make
 nnoremap <Leader>r :!ruby %<cr>
+
+" making and running c progs
+nnoremap <Leader>m :!make <cr>
+nnoremap <Leader>a  :!./a.out <cr>
+
 " put semicolon at end of line without moving cursor
 nnoremap <Leader>; m'A;<ESC>`'
 "remap exit terminal mode
 tnoremap <Esc> <C-\><C-n>
 
 " tab is now for switching windows. S-tab switches to Nerdtree and back
-" (my first ever vim function - im pretty stoked ngl)
 nnoremap <tab> <C-W>
 nnoremap <tab><tab> <C-W>w
+nnoremap <expr> <s-tab> winnr() == 1 ? "\<c-w>p" : "\<c-w>t>"
+
 " Jump list (to newer position) - necesary after remapping tab
 nnoremap <C-p> <C-i>
 
@@ -84,13 +96,11 @@ call plug#begin('~/.config/nvim/plugged')
 	Plug 'junegunn/fzf.vim'
 
 	Plug 'preservim/nerdtree'
-		" Shift tab switches between left window (ie nerdtree) and prev window
-		nnoremap <expr> <s-tab> winnr() == 1 ? "\<c-w>p" : "\<c-w>t>"
-		nnoremap <expr> <s-tab> winnr() == 1 ? "\<c-w>p" : "\<c-w>t>"
 	Plug 'dense-analysis/ale'
 		:command! AD ALEDisable
 		:command! AE ALEEnable
 		:command! AF ALEFix
+		let g:ale_enabled=0
 	Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
 
 	Plug 'sukima/xmledit'
@@ -174,9 +184,9 @@ nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" 
 " nnoremap <silent> <Leader>C        :Colors<CR>
 nnoremap <silent> <Leader>b        :Buffers<CR>
 nnoremap <silent> <Leader>l        :Lines<CR>
-nnoremap <silent> <Leader>ag       :Ag <C-R><C-W><CR>
-nnoremap <silent> <Leader>AG       :Ag <C-R><C-A><CR>
-xnoremap <silent> <Leader>ag       y:Ag <C-R>"<CR>
+"nnoremap <silent> <Leader>ag       :Ag <C-R><C-W><CR>
+"nnoremap <silent> <Leader>AG       :Ag <C-R><C-A><CR>
+"xnoremap <silent> <Leader>ag       y:Ag <C-R>"<CR>
 nnoremap <silent> <Leader>`        :Marks<CR>
 nnoremap <silent> <Leader>g        :Rg<CR>
 
