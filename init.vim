@@ -45,6 +45,11 @@ nnoremap <expr> <s-tab> winnr() == 1 ? "\<c-w>p" : "\<c-w>t>"
 " Jump list (to newer position) - necesary after remapping tab
 nnoremap <C-p> <C-i>
 
+" replace x with y unless following a (like in max or axis)
+" :h regex /perl-patterns for lookaround info
+nnoremap <Leader>y :s/[aA]\@<!x/y/g<cr>
+nnoremap <Leader>x :s/[aA]\@<!y/x/g<cr>
+
 "set up line numbers
 :set number relativenumber
 :augroup numbertoggle
@@ -306,8 +311,8 @@ endfun
 augroup seeingIsBelievingSettings
   " clear the settings if they already exist (so we don't run them twice)
   autocmd!
-  autocmd FileType ruby nmap <buffer> <Leader>z :call SibAnnotateAll("%")<CR>;
-  autocmd FileType ruby nmap <buffer> <Leader>x :call SibAnnotateMarked("%")<CR>;
+  autocmd FileType ruby nmap <buffer> <Leader>Z:call SibAnnotateAll("%")<CR>;
+  autocmd FileType ruby nmap <buffer> <Leader>z :call SibAnnotateMarked("%")<CR>;
   autocmd FileType ruby nmap <buffer> <Leader>c :call SibCleanAnnotations("%")<CR>;
   autocmd FileType ruby nmap <buffer> <Enter>   :call SibToggleMark()<CR>;
   autocmd FileType ruby vmap <buffer> <Enter>   :call SibToggleMark()<CR>;
