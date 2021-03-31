@@ -15,9 +15,34 @@ set scrolloff=4
 nnoremap <Space> <Nop>
 :let mapleader=" "
 
-packadd termdebug
-let g:termdebug_wide=1
-nnoremap <Leader>t  :Termdebug a.out<cr>A
+"----vim-plug plugin manager stuff
+call plug#begin('~/.config/nvim/plugged')
+	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+	Plug 'junegunn/fzf.vim'
+	Plug 'danchoi/ri.vim'
+		let g:ri_no_mappings=1
+		nnoremap <Leader>i :call ri#OpenSearchPrompt(1)<cr>
+		nnoremap <Leader>u :call ri#LookupNameUnderCursor()<cr>
+	Plug 'preservim/nerdtree'
+	Plug 'dense-analysis/ale'
+		:command! AD ALEDisable
+		:command! AE ALEEnable
+		:command! AF ALEFix
+		let g:ale_enabled=0
+	Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
+	Plug 'sukima/xmledit'
+	Plug 'her/synicons.vim'
+	Plug 'ryanoasis/vim-devicons'
+call plug#end()
+"----
+
+" navigate c++ file with 1tbs/stroustrup indent style
+" actually could add an or for either style
+" would like these to be one keypress but not conflict with tags
+nmap ]g /^\w.*{\s*$<cr>
+nmap [g ?^\w.*{\s*$<cr>
+nmap ]] /^\w.*{\s*$<cr>
+nmap [[ ?^\w.*{\s*$<cr>
 
 noremap . ;
 noremap ; .
@@ -26,11 +51,14 @@ nnoremap <Leader>/ :set hls!<cr>
 
 " run ruby program
 " probably remap this to \m and depend on filetype - same cmd for make
-nnoremap <Leader>r :!ruby %<cr>
+nnoremap <Leader>r :w<cr>:!ruby %<cr>
 
+packadd termdebug
+let g:termdebug_wide=1
+nnoremap <Leader>t  :Termdebug a.out<cr>A
 " making and running c progs
-nnoremap <Leader>m :!make <cr>
-nnoremap <Leader>a  :!./a.out <cr>
+nnoremap <Leader>m :w<cr>:!make <cr>
+nnoremap <Leader>a :!./a.out <cr>
 
 " put semicolon at end of line without moving cursor
 nnoremap <Leader>; m'A;<ESC>`'
@@ -45,10 +73,10 @@ nnoremap <expr> <s-tab> winnr() == 1 ? "\<c-w>p" : "\<c-w>t>"
 " Jump list (to newer position) - necesary after remapping tab
 nnoremap <C-p> <C-i>
 
-" replace x with y unless following a (like in max or axis)
+" replace x with y unless following a (as in max or axis) or e (as in next)
 " :h regex /perl-patterns for lookaround info
-nnoremap <Leader>y :s/[aA]\@<!x/y/g<cr>
-nnoremap <Leader>x :s/[aA]\@<!y/x/g<cr>
+nnoremap <Leader>y :s/[aAeE]\@<!x/y/g<cr>
+nnoremap <Leader>x :s/[aAeE]\@<!y/x/g<cr>
 
 "set up line numbers
 :set number relativenumber
@@ -95,24 +123,6 @@ nnoremap <silent> <Leader>kk :call JumpOrOpenNewSplit('k', ':leftabove split', 0
 nnoremap <silent> <Leader>jj :call JumpOrOpenNewSplit('j', ':rightbelow split', 0)<CR>
 " ----------------------------------------------------------------------------
 
-"----vim-plug plugin manager stuff
-call plug#begin('~/.config/nvim/plugged')
-	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-	Plug 'junegunn/fzf.vim'
-
-	Plug 'preservim/nerdtree'
-	Plug 'dense-analysis/ale'
-		:command! AD ALEDisable
-		:command! AE ALEEnable
-		:command! AF ALEFix
-		let g:ale_enabled=0
-	Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
-
-	Plug 'sukima/xmledit'
-	Plug 'her/synicons.vim'
-	Plug 'ryanoasis/vim-devicons'
-call plug#end()
-"----
 
 " ----------------------------------------------------------------------------
 " From Junegunn:
