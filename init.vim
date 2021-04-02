@@ -1,10 +1,16 @@
-" Welcome!
+" Welcome! Judge not, its WIP
+
+" contains bits from:
+" junegunn, janjiss,
+" https://github.com/zenbro/dotfiles/blob/master/.nvimrc
+" https://github.com/martin-svk/dot-files/blob/master/neovim/init.vim
+
 colorscheme jellybeans
 set tabstop=4
 set shiftwidth=4
 set foldcolumn=1
 set encoding=UTF-8
-set timeoutlen=500				
+"set timeoutlen=500				
 set guicursor=					" cursor is block, even in ins mode
 set hidden 						" can navigate away from unsaved file
 set nowrap
@@ -19,6 +25,11 @@ nnoremap <Space> <Nop>
 call plug#begin('~/.config/nvim/plugged')
 	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 	Plug 'junegunn/fzf.vim'
+	" Ruby support (plays nicely with tpope/rbenv-ctags)
+	Plug 'vim-ruby/vim-ruby'
+	" Rails support (:A, :R, :Rmigration, :Rextract)
+	Plug 'tpope/vim-rails', { 'for': ['ruby', 'eruby', 'haml', 'slim'] }
+
 	Plug 'danchoi/ri.vim'
 		let g:ri_no_mappings=1
 		nnoremap <Leader>i :call ri#OpenSearchPrompt(1)<cr>
@@ -31,6 +42,8 @@ call plug#begin('~/.config/nvim/plugged')
 		let g:ale_enabled=0
 	Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
 	Plug 'sukima/xmledit'
+	Plug 'tpope/vim-surround'
+
 	Plug 'her/synicons.vim'
 	Plug 'ryanoasis/vim-devicons'
 call plug#end()
@@ -39,6 +52,8 @@ call plug#end()
 " navigate c++ file with 1tbs/stroustrup indent style
 " actually could add an or for either style
 " would like these to be one keypress but not conflict with tags
+" ACTUALLY might have to fix this for the function { placement
+" since i made this before reading the standard
 nmap ]g /^\w.*{\s*$<cr>
 nmap [g ?^\w.*{\s*$<cr>
 nmap ]] /^\w.*{\s*$<cr>
