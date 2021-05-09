@@ -17,6 +17,7 @@ set nowrap
 set nohlsearch
 set scrolloff=4
 
+
 " remap leader to space
 nnoremap <Space> <Nop>
 :let mapleader=" "
@@ -172,8 +173,13 @@ nnoremap <leader>n :NERDTreeToggle<cr>
 " ----------------------------------------------------------------------------
 " Moving lines
 " ----------------------------------------------------------------------------
+" there was a weird bug where mapping <C-j> was creating a mapping
+" for <NL>, which was interfering with SiB <Enter> keymapping:
+" <Enter> was pasting last inserted text after calling the function.
+" BUT bug seems to have disappeared. So strange.
 nnoremap <silent> <C-k> :move-2<cr>
 nnoremap <silent> <C-j> :move+<cr>
+"unmap <NL>
 nnoremap <silent> <C-h> <<
 nnoremap <silent> <C-l> >>
 
@@ -344,11 +350,10 @@ endfun
 augroup seeingIsBelievingSettings
   " clear the settings if they already exist (so we don't run them twice)
   autocmd!
-  autocmd FileType ruby nmap <buffer> <Leader>Z:call SibAnnotateAll("%")<CR>;
-  autocmd FileType ruby nmap <buffer> <Leader>z :call SibAnnotateMarked("%")<CR>;
-  autocmd FileType ruby nmap <buffer> <Leader>c :call SibCleanAnnotations("%")<CR>;
-  "autocmd FileType ruby nmap <buffer> <Enter>   :call SibToggleMark()<CR>;
-  "autocmd FileType ruby vmap <buffer> <Enter>   :call SibToggleMark()<CR>;
+  autocmd FileType ruby noremap <buffer> <Leader>sa :call SibAnnotateAll("%")<CR>;
+  autocmd FileType ruby noremap <buffer> <Leader>sm :call SibAnnotateMarked("%")<CR>;
+  autocmd FileType ruby noremap <buffer> <Leader>sc :call SibCleanAnnotations("%")<CR>;
+  autocmd FileType ruby noremap <buffer> <Enter>    :call SibToggleMark()<CR>;
 
   autocmd FileType ruby vmap <buffer> <Leader>b :call SibAnnotateAll("'<,'>")<CR>;
   autocmd FileType ruby vmap <buffer> <Leader>n :call SibAnnotateMarked("'<,'>")<CR>;
