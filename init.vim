@@ -59,6 +59,13 @@ nmap [g ?^\w.*{\s*$<cr>
 nmap ]] /^\w.*{\s*$<cr>
 nmap [[ ?^\w.*{\s*$<cr>
 
+noremap :Wa :wa
+noremap :WA :wa
+noremap :Wq :wq
+noremap :WQ :wq
+noremap :WQA :wqa
+noremap :WQa :wqa
+
 noremap . ;
 noremap ; .
 " clear search highlighting
@@ -72,7 +79,7 @@ packadd termdebug
 let g:termdebug_wide=1
 nnoremap <Leader>t  :Termdebug a.out<cr>A
 " making and running c progs
-nnoremap <Leader>m :w<cr>:!make <cr>
+nnoremap <Leader>m :w<cr>:!make<cr>
 nnoremap <Leader>a :!./a.out <cr>
 
 " put semicolon at end of line without moving cursor
@@ -90,6 +97,7 @@ nnoremap <C-p> <C-i>
 
 " replace x with y unless following a (as in max or axis) or e (as in next)
 " :h regex /perl-patterns for lookaround info
+" TODO: make it not change xform to yform
 nnoremap <Leader>y :s/[aAeE]\@<!x/y/g<cr>
 nnoremap <Leader>x :s/[aAeE]\@<!y/x/g<cr>
 
@@ -339,8 +347,8 @@ augroup seeingIsBelievingSettings
   autocmd FileType ruby nmap <buffer> <Leader>Z:call SibAnnotateAll("%")<CR>;
   autocmd FileType ruby nmap <buffer> <Leader>z :call SibAnnotateMarked("%")<CR>;
   autocmd FileType ruby nmap <buffer> <Leader>c :call SibCleanAnnotations("%")<CR>;
-  autocmd FileType ruby nmap <buffer> <Enter>   :call SibToggleMark()<CR>;
-  autocmd FileType ruby vmap <buffer> <Enter>   :call SibToggleMark()<CR>;
+  "autocmd FileType ruby nmap <buffer> <Enter>   :call SibToggleMark()<CR>;
+  "autocmd FileType ruby vmap <buffer> <Enter>   :call SibToggleMark()<CR>;
 
   autocmd FileType ruby vmap <buffer> <Leader>b :call SibAnnotateAll("'<,'>")<CR>;
   autocmd FileType ruby vmap <buffer> <Leader>n :call SibAnnotateMarked("'<,'>")<CR>;
