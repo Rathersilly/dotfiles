@@ -5,7 +5,6 @@
 " https://github.com/zenbro/dotfiles/blob/master/.nvimrc
 " https://github.com/martin-svk/dot-files/blob/master/neovim/init.vim
 
-colorscheme jellybeans
 set tabstop=4
 set shiftwidth=4
 set foldcolumn=1
@@ -24,31 +23,39 @@ nnoremap <Space> <Nop>
 
 "----vim-plug plugin manager stuff
 call plug#begin('~/.config/nvim/plugged')
+	Plug 'nanotech/jellybeans.vim'
+    Plug 'sickill/vim-monokai'
+
+	Plug 'preservim/nerdtree'
+    Plug 'Xuyuanp/nerdtree-git-plugin'
+	Plug 'her/synicons.vim'
+	Plug 'ryanoasis/vim-devicons'
+
 	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 	Plug 'junegunn/fzf.vim'
+
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 	" Ruby support (plays nicely with tpope/rbenv-ctags)
 	Plug 'vim-ruby/vim-ruby'
 	" Rails support (:A, :R, :Rmigration, :Rextract)
 	Plug 'tpope/vim-rails', { 'for': ['ruby', 'eruby', 'haml', 'slim'] }
 
-	Plug 'danchoi/ri.vim'
-		let g:ri_no_mappings=1
-		nnoremap <Leader>i :call ri#OpenSearchPrompt(1)<cr>
-		nnoremap <Leader>u :call ri#LookupNameUnderCursor()<cr>
-	Plug 'preservim/nerdtree'
 	Plug 'dense-analysis/ale'
 		:command! AD ALEDisable
 		:command! AE ALEEnable
 		:command! AF ALEFix
 		let g:ale_enabled=0
+
 	Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
 	Plug 'sukima/xmledit'
-	Plug 'tpope/vim-surround'
 
-	Plug 'her/synicons.vim'
-	Plug 'ryanoasis/vim-devicons'
+	Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-commentary'
 call plug#end()
 "----
+
+colorscheme jellybeans
 
 " navigate c++ file with 1tbs/stroustrup indent style
 " actually could add an or for either style
@@ -66,6 +73,8 @@ noremap :Wq :wq
 noremap :WQ :wq
 noremap :WQA :wqa
 noremap :WQa :wqa
+
+inoremap jk <esc>
 
 noremap . ;
 noremap ; .
@@ -113,6 +122,65 @@ nnoremap <Leader>x :s/[aAeE]\@<!y/x/g<cr>
 "windows split in a more harmonious way
 set splitbelow
 set splitright
+
+" ----- coc.nvim mappings -----
+" should revisit this later
+let g:coc_global_extensions = [
+            "\ 'coc-pairs',
+            "\ 'coc-eslint', 
+            "\ 'coc-prettier', 
+            \ 'coc-snippets',
+            \ 'coc-solargraph',
+            \ 'coc-css', 
+            \ 'coc-html-css-support', 
+            \ 'coc-json', 
+            \ ]
+
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" from https://gist.github.com/benawad/b768f5a5bbd92c8baabd363b7e79786f
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Remap for rename current word
+nmap <F2> <Plug>(coc-rename)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call CocAction('doHover')<cr>
+" nnoremap <silent> K :call <SID>show_documentation()<CR>
+" function! s:show_documentation()
+"   if (index(['vim','help'], &filetype) >= 0)
+"     execute 'h '.expand('<cword>')
+"   else
+"     call CocAction('doHover')
+"   endif
+" endfunction
+
+" ----- end coc.nvim section -----
 
 " ----------------------------------------------------------------------------
 " https://github.com/zenbro/dotfiles/blob/master/.nvimrc
@@ -189,6 +257,7 @@ nnoremap Y y$
 " mouse
 silent! set ttymouse=xterm2
 set mouse=a
+
 " }}}
 " ============================================================================
 " FZF {{{
@@ -225,7 +294,7 @@ endif
 
 " nnoremap <silent> <Leader><Leader> :Files<CR>
 nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
-" nnoremap <silent> <Leader>C        :Colors<CR>
+nnoremap <silent> <Leader>C        :Colors<CR>
 nnoremap <silent> <Leader>b        :Buffers<CR>
 nnoremap <silent> <Leader>l        :Lines<CR>
 "nnoremap <silent> <Leader>ag       :Ag <C-R><C-W><CR>
@@ -353,11 +422,11 @@ augroup seeingIsBelievingSettings
   autocmd FileType ruby noremap <buffer> <Leader>sa :call SibAnnotateAll("%")<CR>;
   autocmd FileType ruby noremap <buffer> <Leader>sm :call SibAnnotateMarked("%")<CR>;
   autocmd FileType ruby noremap <buffer> <Leader>sc :call SibCleanAnnotations("%")<CR>;
-  autocmd FileType ruby noremap <buffer> <Enter>    :call SibToggleMark()<CR>;
+  autocmd FileType ruby noremap <buffer> <Leader>ss :call SibToggleMark()<CR>;
 
-  autocmd FileType ruby vmap <buffer> <Leader>b :call SibAnnotateAll("'<,'>")<CR>;
-  autocmd FileType ruby vmap <buffer> <Leader>n :call SibAnnotateMarked("'<,'>")<CR>;
-  autocmd FileType ruby vmap <buffer> <Leader>v :call SibCleanAnnotations("'<,'>")<CR>;
+  autocmd FileType ruby vmap <buffer> <Leader>sa :call SibAnnotateAll("'<,'>")<CR>;
+  autocmd FileType ruby vmap <buffer> <Leader>sm :call SibAnnotateMarked("'<,'>")<CR>;
+  autocmd FileType ruby vmap <buffer> <Leader>sc :call SibCleanAnnotations("'<,'>")<CR>;
 augroup END
 
 "ALEFix
