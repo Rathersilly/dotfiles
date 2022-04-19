@@ -14,8 +14,8 @@ set guicursor=					" cursor is block, even in ins mode
 set hidden 						" can navigate away from unsaved file
 set nowrap
 set nohlsearch
+set incsearch                   "cursor will jump to match while typing
 set scrolloff=4
-
 
 " remap leader to space
 nnoremap <Space> <Nop>
@@ -24,17 +24,16 @@ nnoremap <Space> <Nop>
 "----vim-plug plugin manager stuff
 call plug#begin('~/.config/nvim/plugged')
 	Plug 'nanotech/jellybeans.vim'
-    Plug 'sickill/vim-monokai'
+	Plug 'sickill/vim-monokai'
 
 	Plug 'preservim/nerdtree'
-    Plug 'Xuyuanp/nerdtree-git-plugin'
+	Plug 'Xuyuanp/nerdtree-git-plugin'
 	Plug 'her/synicons.vim'
 	Plug 'ryanoasis/vim-devicons'
 
 	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 	Plug 'junegunn/fzf.vim'
 
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 	" Ruby support (plays nicely with tpope/rbenv-ctags)
 	Plug 'vim-ruby/vim-ruby'
@@ -51,7 +50,7 @@ call plug#begin('~/.config/nvim/plugged')
 	Plug 'sukima/xmledit'
 
 	Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-commentary'
+	Plug 'tpope/vim-commentary'
 call plug#end()
 "----
 
@@ -167,6 +166,7 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Remap for rename current word
+" TODO find simple way to undo this - bufdo maybe
 nmap <F2> <Plug>(coc-rename)
 
 " Use K to show documentation in preview window
@@ -214,7 +214,6 @@ nnoremap <silent> <Leader>ll :call JumpOrOpenNewSplit('l', ':rightbelow vsplit',
 nnoremap <silent> <Leader>kk :call JumpOrOpenNewSplit('k', ':leftabove split', 0)<CR>
 nnoremap <silent> <Leader>jj :call JumpOrOpenNewSplit('j', ':rightbelow split', 0)<CR>
 " ----------------------------------------------------------------------------
-
 
 " ----------------------------------------------------------------------------
 " From Junegunn:

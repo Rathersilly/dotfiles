@@ -12,12 +12,18 @@ alias code='code --disable-gpu'
 
 alias untar='tar -zxvf '
 
-alias rails='bin/rails'
+# alias rails='bin/rails'
+
+alias rs='rails server'
+alias rc='rails console'
+alias rt='rails test'
 alias bx='bundle exec'
+alias be='bundle exec'
+alias ber='bundle exec ruby'
 alias bxs='bundle exec bin/rails server'
 alias bxc='bundle exec bin/rails console'
 
-alias gac="git add -A && git commit -am \"$1\""
+alias gac="git add -A && git commit -m \"$1\""
 
 g() {
 	if [[ $# -gt 0 ]]; then
@@ -31,6 +37,7 @@ function mcd() {
 	mkdir -p "$1" && cd "$1";
 }
 
+alias cd..='cd ..'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
