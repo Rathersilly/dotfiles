@@ -64,6 +64,7 @@ return packer.startup(function(use)
   use "hrsh7th/cmp-cmdline" -- cmdline completions
   use "saadparwaiz1/cmp_luasnip" -- snippet completions
   use "hrsh7th/cmp-nvim-lsp"
+  use "hrsh7th/cmp-nvim-lua"
 
 
   -- snippets
@@ -76,6 +77,15 @@ return packer.startup(function(use)
   --not sure about these yet TODO
   --use "tamago324/nlsp-settings.nvim" -- language server settings defined in json for
   --use "jose-elias-alvarez/null-ls.nvim" -- for formatters and linters
+
+  ---- Telescope
+  -- use { "nvim-telescope/telescope.nvim", requires = { {'nvim-lua/plenary.nvim'} } }
+  -- use { "nvim-telescope/telescope-fzf-native.nvim", run = 'make' }
+  use {'junegunn/fzf', dir = '~/.fzf', run = './install --all' }
+  use {'junegunn/fzf.vim'}
+
+
+  use "BurntSushi/ripgrep"
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins

@@ -10,7 +10,10 @@ keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+--Make Y behave like other capitals
+keymap("n", "Y", "y$", opts)
 
+----------------------------------------
 -- -- Modes
 --   normal_mode = "n",
 --   insert_mode = "i",
@@ -19,12 +22,37 @@ vim.g.maplocalleader = " "
 --   term_mode = "t",
 --   command_mode = "c",
 
+----------------------------------------
 -- Normal --
--- Better window navigation
-keymap("n", "<C-h>", "<C-w>h", opts)
-keymap("n", "<C-j>", "<C-w>j", opts)
-keymap("n", "<C-k>", "<C-w>k", opts)
-keymap("n", "<C-l>", "<C-w>l", opts)
+
+keymap("n", "<C-F>", "<C-D>", opts)
+keymap("n", "<C-B>", "<C-U>", opts)
+
+----------------------------------------
+---- Tab Things
+
+keymap("n", "<C-h>", ":tabprev", opts)
+keymap("n", "<C-l>", ":tabnext", opts)
+
+-- <tab>3 goes to tab 3
+for num = 1,9 do
+	keymap("n", "<leader>".. num, ":"..num.."tabnext<cr>", opts)
+end
+
+
+----------------------------------------
+---- Window things
+
+--tab is now for switching windows. S-tab switches to Nerdtree and back
+vim.api.nvim_exec(
+[[
+nnoremap <tab> <C-W>
+nnoremap <tab><tab> <C-W>w
+nnoremap <expr> <s-tab> winnr() == 1 ? "\<c-w>p" : "\<c-w>t>"
+]],true)
+
+-- Jump list (to newer position) - necesary after remapping tab
+keymap("n", "<C-p>", "<C-i>", opts)
 
 -- Resize with arrows
 keymap("n", "<C-Up>", ":resize +2<CR>", opts)
@@ -32,14 +60,20 @@ keymap("n", "<C-Down>", ":resize -2<CR>", opts)
 keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
+----------------------------------------
+---- Buffer things
+
 -- Navigate buffers
 keymap("n", "<S-l>", ":bnext<CR>", opts)
 keymap("n", "<S-h>", ":bprevious<CR>", opts)
 
--- Insert --
+----------------------------------------
+-- Insert
+
 -- Press jk fast to enter
 keymap("i", "jk", "<ESC>", opts)
 
+----------------------------------------
 -- Visual --
 -- Stay in indent mode
 keymap("v", "<", "<gv", opts)
@@ -58,6 +92,122 @@ keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 
 --TODO check out the better terminal navigation keys
+--Telescope
+--keymap("n", "<leader>f", "<cmd>Telescope find_files<cr>", opts)
+--keymap("n", "<leader>g", "<cmd>Telescope live_grep<cr>", opts)
+--keymap("n", "<leader>d", "<cmd>Telescope live_grep<cr>", opts)
+
+----------------------------------------
+--fzf > telescope atm
+vim.api.nvim_exec(
+[[
+nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
+nnoremap <silent> <Leader>C        :Colors<CR>
+nnoremap <silent> <Leader>b        :Buffers<CR>
+"nnoremap <silent> <Leader>l        :Lines<CR>
+nnoremap <silent> <Leader>`        :Marks<CR>
+nnoremap <silent> <Leader>g        :Rg<CR>
+
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-i': 'split',
+  \ 'ctrl-s': 'vsplit' }
+]],
+true)
+
+keymap("n", ":Wa", ":wa", opts)
+keymap("n", ":WA", ":wa", opts)
+keymap("n", ":Wq", ":wq", opts)
+keymap("n", ":WQ", ":wq", opts)
+keymap("n", ":WQa", ":wqa", opts)
+keymap("n", ":WQA", ":wqa", opts)
+
+
+----------------------------------------
+-- . repeat command is now ;
+keymap("n", ".", ";", opts)
+keymap("n", ";", ".", opts)
+
+--clear search highlighting
+keymap("n", "<Leader>/", ":set hls!<cr>", opts)
+
+--run ruby program
+--probably remap this to \m and depend on filetype - same cmd for make
+keymap("n", "<Leader>r", "::e<cr>:!ruby %<cr>", opts)
+
+vim.api.nvim_exec(
+[[
+packadd termdebug
+let g:termdebug_wide=1
+nnoremap <Leader>t  :Termdebug a.out<cr>A
+" making and running c progs
+nnoremap <Leader>m :w<cr>:!make<cr>
+nnoremap <Leader>a :!./a.out <cr>
+
+" put semicolon at end of line without moving cursor
+nnoremap <Leader>; m'A;<ESC>`'
+"remap exit terminal mode
+tnoremap <Esc> <C-\><C-n>
 
 
 
+" replace x with y unless following a (as in max or axis) or e (as in next)
+" :h regex /perl-patterns for lookaround info
+" TODO: make it not change xform to yform
+nnoremap <Leader>y :s/[aAeE]\@<!x/y/g<cr>
+nnoremap <Leader>x :s/[aAeE]\@<!y/x/g<cr>
+
+"set up line numbers
+:set number relativenumber
+:augroup numbertoggle
+:  autocmd!
+:  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+:  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+:augroup END
+
+"windows split in a more harmonious way
+set splitbelow
+set splitright
+
+
+" If split in given direction exists - jump, else create new split
+function! JumpOrOpenNewSplit(key, cmd, fzf) " {{{
+  let current_window = winnr()
+  execute 'wincmd' a:key
+  if current_window == winnr()
+    execute a:cmd
+    if a:fzf
+      Files
+    endif
+  else
+    if a:fzf
+      Files
+    endif
+  endif
+endfunction " }}}
+nnoremap <silent> <Leader>hh :call JumpOrOpenNewSplit('h', ':leftabove vsplit', 0)<CR>
+nnoremap <silent> <Leader>ll :call JumpOrOpenNewSplit('l', ':rightbelow vsplit', 0)<CR>
+nnoremap <silent> <Leader>kk :call JumpOrOpenNewSplit('k', ':leftabove split', 0)<CR>
+nnoremap <silent> <Leader>jj :call JumpOrOpenNewSplit('j', ':rightbelow split', 0)<CR>
+
+" ----------------------------------------------------------------------------
+" Moving lines
+" ----------------------------------------------------------------------------
+" there was a weird bug where mapping <C-j> was creating a mapping
+" for <NL>, which was interfering with SiB <Enter> keymapping:
+" <Enter> was pasting last inserted text after calling the function.
+" BUT bug seems to have disappeared. So strange.
+nnoremap <silent> <C-k> :move-2<cr>
+nnoremap <silent> <C-j> :move+<cr>
+"unmap <NL>
+"nnoremap <silent> <C-h> <<
+"nnoremap <silent> <C-l> >>
+
+
+" mouse
+silent! set ttymouse=xterm2
+set mouse=a
+]],true)
+
+--TODO
+--Seeing is believing, ALE, maybe more fzf

@@ -1,5 +1,4 @@
--- :help options
-
+--: help options
 local options = {
 	backup 			= false,
 	clipboard 		= "unnamedplus",
