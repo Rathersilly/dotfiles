@@ -25,20 +25,31 @@ keymap("n", "Y", "y$", opts)
 ----------------------------------------
 -- Normal --
 
-keymap("n", "<C-F>", "<C-D>", opts)
-keymap("n", "<C-B>", "<C-U>", opts)
+-- change forward/back to down/up behavior
+keymap("n", "<C-f>", "<C-d>", opts)
+keymap("n", "<C-b>", "<C-u>", opts)
+
+-- S-j/k is now extraline/yesterline
+keymap("n", "<S-j>", "<C-e>", opts)
+keymap("n", "<S-k>", "<C-y>", opts)
 
 ----------------------------------------
 ---- Tab Things
 
-keymap("n", "<C-h>", ":tabprev", opts)
-keymap("n", "<C-l>", ":tabnext", opts)
+keymap("n", "<S-h>", ":tabprev", opts)
+keymap("n", "<S-l>", ":tabnext", opts)
 
 -- <tab>3 goes to tab 3
 for num = 1,9 do
 	keymap("n", "<leader>".. num, ":"..num.."tabnext<cr>", opts)
 end
 
+----------------------------------------
+---- Buffer things
+
+-- Navigate buffers
+keymap("n", "<C-l>", ":bnext<CR>", opts)
+keymap("n", "<C-h>", ":bprevious<CR>", opts)
 
 ----------------------------------------
 ---- Window things
@@ -60,12 +71,6 @@ keymap("n", "<C-Down>", ":resize -2<CR>", opts)
 keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
-----------------------------------------
----- Buffer things
-
--- Navigate buffers
-keymap("n", "<S-l>", ":bnext<CR>", opts)
-keymap("n", "<S-h>", ":bprevious<CR>", opts)
 
 ----------------------------------------
 -- Insert
@@ -98,7 +103,8 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 --keymap("n", "<leader>d", "<cmd>Telescope live_grep<cr>", opts)
 
 ----------------------------------------
---fzf > telescope atm
+--fzf things
+--check old init.vim for more - also junegunn's init.vim
 vim.api.nvim_exec(
 [[
 nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
@@ -124,6 +130,12 @@ keymap("n", ":WQA", ":wqa", opts)
 
 
 ----------------------------------------
+-- Nvimtree
+keymap("n", "<leader>n", ":NvimTreeToggle<cr>", opts)
+
+----------------------------------------
+-- Misc changes - can be sorted
+
 -- . repeat command is now ;
 keymap("n", ".", ";", opts)
 keymap("n", ";", ".", opts)
@@ -131,12 +143,18 @@ keymap("n", ";", ".", opts)
 --clear search highlighting
 keymap("n", "<Leader>/", ":set hls!<cr>", opts)
 
+-- <C-e> is autopairs fastwrap, set in autopairs.lua
+
 --run ruby program
 --probably remap this to \m and depend on filetype - same cmd for make
-keymap("n", "<Leader>r", "::e<cr>:!ruby %<cr>", opts)
+keymap("n", "<Leader>r", ":w<cr>:!ruby %<cr>", opts)
 
 vim.api.nvim_exec(
 [[
+" change c-f to c-d etc
+noremap <C-F> <C-D>
+noremap <C-B> <C-U>
+
 packadd termdebug
 let g:termdebug_wide=1
 nnoremap <Leader>t  :Termdebug a.out<cr>A
@@ -170,6 +188,7 @@ set splitbelow
 set splitright
 
 
+" https://github.com/zenbro/dotfiles/blob/master/.nvimrc
 " If split in given direction exists - jump, else create new split
 function! JumpOrOpenNewSplit(key, cmd, fzf) " {{{
   let current_window = winnr()

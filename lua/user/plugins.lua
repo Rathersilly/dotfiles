@@ -45,6 +45,13 @@ return packer.startup(function(use)
   use "wbthomason/packer.nvim" -- Have packer manage itself
   use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
   use "nvim-lua/plenary.nvim" -- Useful lua functions used ny lots of plugins
+	use "windwp/nvim-autopairs" -- Autopairs, integrates with both cmp and treesitter
+	use "kyazdani42/nvim-tree.lua"
+  use "kyazdani42/nvim-web-devicons"
+	use "akinsho/bufferline.nvim"
+  use "moll/vim-bbye"
+
+
 
   -- colorschemes
   use "nanotech/jellybeans.vim"
@@ -78,14 +85,29 @@ return packer.startup(function(use)
   --use "tamago324/nlsp-settings.nvim" -- language server settings defined in json for
   --use "jose-elias-alvarez/null-ls.nvim" -- for formatters and linters
 
-  ---- Telescope
+  ---- Telescope / FZF
   -- use { "nvim-telescope/telescope.nvim", requires = { {'nvim-lua/plenary.nvim'} } }
   -- use { "nvim-telescope/telescope-fzf-native.nvim", run = 'make' }
   use {'junegunn/fzf', dir = '~/.fzf', run = './install --all' }
   use {'junegunn/fzf.vim'}
 
-
   use "BurntSushi/ripgrep"
+
+  -- Treesitter
+  use {
+    "nvim-treesitter/nvim-treesitter",
+    run = ":TSUpdate",
+  }
+
+	-- Comments
+	use "numToStr/Comment.nvim" -- Easily comment stuff
+	use "JoosepAlviste/nvim-ts-context-commentstring"
+
+	-- Git
+	use "lewis6991/gitsigns.nvim"
+
+
+
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins

@@ -2,8 +2,8 @@
 local options = {
 	backup 			= false,
 	clipboard 		= "unnamedplus",
-	tabstop 		= 4,
-	shiftwidth 		= 4,
+	tabstop 		= 2,
+	shiftwidth 		= 2,
 	foldcolumn 		= "1",
 	conceallevel 	= 0,                -- so that `` is visible in markdown files
 	encoding 		= "utf-8",
