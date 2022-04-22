@@ -37,8 +37,8 @@ keymap("n", "<C-b>", "<C-u>", opts)
 ----------------------------------------
 ---- Tab Things
 
-keymap("n", "<S-h>", ":tabprev", opts)
-keymap("n", "<S-l>", ":tabnext", opts)
+keymap("n", "<S-h>", ":tabprev<cr>", opts)
+keymap("n", "<S-l>", ":tabnext<cr>", opts)
 
 -- <tab>3 goes to tab 3
 for num = 1,9 do

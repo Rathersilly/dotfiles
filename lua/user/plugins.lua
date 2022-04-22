@@ -51,7 +51,8 @@ return packer.startup(function(use)
 	use "akinsho/bufferline.nvim"
   use "moll/vim-bbye"
 	use "nvim-lualine/lualine.nvim"
-	use "akinsho/toggleterm.nvim"
+	-- TODO reenable toggleterm and fix conflicts with fzf hotkeys
+	-- use "akinsho/toggleterm.nvim"
 	use "lewis6991/impatient.nvim" -- improve startup time
 	use "folke/which-key.nvim"
 
