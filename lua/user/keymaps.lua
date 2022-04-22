@@ -30,8 +30,9 @@ keymap("n", "<C-f>", "<C-d>", opts)
 keymap("n", "<C-b>", "<C-u>", opts)
 
 -- S-j/k is now extraline/yesterline
-keymap("n", "<S-j>", "<C-e>", opts)
-keymap("n", "<S-k>", "<C-y>", opts)
+-- TODO find new binds for this - conflicts with n J - join lines
+--keymap("n", "<S-j>", "<C-e>", opts)
+--keymap("n", "<S-k>", "<C-y>", opts)
 
 ----------------------------------------
 ---- Tab Things
@@ -128,10 +129,23 @@ keymap("n", ":WQ", ":wq", opts)
 keymap("n", ":WQa", ":wqa", opts)
 keymap("n", ":WQA", ":wqa", opts)
 
+----------------------------------------
+-- Which-key
+keymap("n", "<leader>w", ":WhichKey<cr>", opts)
+-- other keybinds set in nvimtree.lus
 
 ----------------------------------------
 -- Nvimtree
 keymap("n", "<leader>n", ":NvimTreeToggle<cr>", opts)
+-- other keybinds set in nvimtree.lus
+
+----------------------------------------
+-- Null ls
+-- TODO - check out :h lsp - its very rich. also used by cmp.
+-- can fix the cmp enter twice problem probs
+-- formatting_sync() vs formatting() is so that it will finish before you save and quit
+keymap("n", "<leader>z", "<cmd>lua vim.lsp.buf.formatting_sync()<cr>", opts)
+-- ALSO theres tons of lsp keybinds in lsp/handlers.lua
 
 ----------------------------------------
 -- Misc changes - can be sorted
@@ -151,10 +165,6 @@ keymap("n", "<Leader>r", ":w<cr>:!ruby %<cr>", opts)
 
 vim.api.nvim_exec(
 [[
-" change c-f to c-d etc
-noremap <C-F> <C-D>
-noremap <C-B> <C-U>
-
 packadd termdebug
 let g:termdebug_wide=1
 nnoremap <Leader>t  :Termdebug a.out<cr>A
@@ -216,8 +226,8 @@ nnoremap <silent> <Leader>jj :call JumpOrOpenNewSplit('j', ':rightbelow split', 
 " for <NL>, which was interfering with SiB <Enter> keymapping:
 " <Enter> was pasting last inserted text after calling the function.
 " BUT bug seems to have disappeared. So strange.
-nnoremap <silent> <C-k> :move-2<cr>
-nnoremap <silent> <C-j> :move+<cr>
+"nnoremap <silent> <C-k> :move-2<cr>
+"nnoremap <silent> <C-j> :move+<cr>
 "unmap <NL>
 "nnoremap <silent> <C-h> <<
 "nnoremap <silent> <C-l> >>
