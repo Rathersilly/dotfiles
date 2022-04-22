@@ -1,6 +1,6 @@
 " Welcome! Judge not, its WIP
 
-" contains bits from:
+	" contains bits from:
 " junegunn, janjiss,
 " https://github.com/zenbro/dotfiles/blob/master/.nvimrc
 " https://github.com/martin-svk/dot-files/blob/master/neovim/init.vim

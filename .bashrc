@@ -16,6 +16,7 @@ alias untar='tar -zxvf '
 
 alias rs='rails server'
 alias rc='rails console'
+alias rcs='rails console --sandbox'
 alias rt='rails test'
 alias bx='bundle exec'
 alias be='bundle exec'

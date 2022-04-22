@@ -1,9 +1,16 @@
 local opts = { noremap = true, silent = true }
 local term_opts = { silent = true }
 term_opts = 4
--- not sure if there is a difference between these:
+
 local keymap = vim.api.nvim_set_keymap
-local set = vim.keymap.set
+local set = vim.keymap.set -- these 2 lines are same - keymap.set added in 0.7.0
+
+--https://github.com/nanotee/nvim-lua-guide
+-- allows you to put '<tab>' in a function without it taken literally
+local function t(str) -- t as in 'termcodes'
+    -- Adjust boolean arguments as needed (probably dont need to)
+    return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
 
 --Remap space as leader key
 keymap("", "<Space>", "<Nop>", opts)
@@ -13,7 +20,7 @@ vim.g.maplocalleader = " "
 --Make Y behave like other capitals
 keymap("n", "Y", "y$", opts)
 
-----------------------------------------
+----------------------------------------:was
 -- -- Modes
 --   normal_mode = "n",
 --   insert_mode = "i",
@@ -55,13 +62,14 @@ keymap("n", "<C-h>", ":bprevious<CR>", opts)
 ----------------------------------------
 ---- Window things
 
---tab is now for switching windows. S-tab switches to Nerdtree and back
-vim.api.nvim_exec(
-[[
-nnoremap <tab> <C-W>
-nnoremap <tab><tab> <C-W>w
-nnoremap <expr> <s-tab> winnr() == 1 ? "\<c-w>p" : "\<c-w>t>"
-]],true)
+--tab is now for switching windows. S-tab switches to nvim-tree and back
+function _G.shifttab()
+	return vim.fn.winnr() == 1 and t'<C-w>p' or t'<C-w>t'
+end
+--TODO make this gel with nvim-tree
+vim.keymap.set('n', '<tab>', '<C-w>', opts)
+vim.keymap.set('n', '<tab><tab>', '<C-w>w', opts)
+vim.keymap.set('n','<s-tab>', 'v:lua.shifttab()', {expr = true, noremap = true,})
 
 -- Jump list (to newer position) - necesary after remapping tab
 keymap("n", "<C-p>", "<C-i>", opts)
