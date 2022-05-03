@@ -13,18 +13,22 @@ alias code='code --disable-gpu'
 alias untar='tar -zxvf '
 
 # alias rails='bin/rails'
-
 alias rs='rails server'
 alias rc='rails console'
 alias rcs='rails console --sandbox'
 alias rt='rails test'
+alias rti='rails test:integration'
 alias bx='bundle exec'
 alias be='bundle exec'
 alias ber='bundle exec ruby'
 alias bxs='bundle exec bin/rails server'
 alias bxc='bundle exec bin/rails console'
 
-alias gac="git add -A && git commit -m \"$1\""
+# alias gac="git add -A && git commit -m \'$1\'" check the interpolation here
+alias ga='git add -A'
+alias gcm='git commit -m'
+alias glo="git log --oneline"
+
 
 g() {
 	if [[ $# -gt 0 ]]; then

@@ -1,0 +1,97 @@
+final_init.vim:" for <NL>, which was interfering with SiB <Enter> keymapping:
+lua/user/lsp/handlers.lua:local function lsp_keymaps(bufnr)
+lua/user/lsp/handlers.lua:  vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+lua/user/lsp/handlers.lua:  vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+lua/user/lsp/handlers.lua:  vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+lua/user/lsp/handlers.lua:  vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+lua/user/lsp/handlers.lua:  vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+lua/user/lsp/handlers.lua:  -- vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+lua/user/lsp/handlers.lua:  vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+lua/user/lsp/handlers.lua:  -- vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+lua/user/lsp/handlers.lua:  -- vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>f", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+lua/user/lsp/handlers.lua:  vim.api.nvim_buf_set_keymap(bufnr, "n", "[d", '<cmd>lua vim.diagnostic.goto_prev({ border = "rounded" })<CR>', opts)
+lua/user/lsp/handlers.lua:  vim.api.nvim_buf_set_keymap(bufnr, "n", "gl",
+lua/user/lsp/handlers.lua:  vim.api.nvim_buf_set_keymap(bufnr, "n", "]d", '<cmd>lua vim.diagnostic.goto_next({ border = "rounded" })<CR>', opts)
+lua/user/lsp/handlers.lua:  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+lua/user/lsp/handlers.lua:  lsp_keymaps(bufnr)
+lua/user/whichkey.lua:  silent = true, -- use `silent` when creating keymaps
+lua/user/whichkey.lua:  noremap = true, -- use `noremap` when creating keymaps
+lua/user/whichkey.lua:  nowait = true, -- use `nowait` when creating keymaps
+lua/user/whichkey.lua:    k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
+lua/user/keymaps.lua:local keymap = vim.api.nvim_set_keymap
+lua/user/keymaps.lua:-- use keymap, not set, so that i can grep them and see them in 1 place
+lua/user/keymaps.lua:-- local set = vim.keymap.set -- these 2 lines are same - keymap.set added in 0.7.0
+lua/user/keymaps.lua:keymap("", "<Space>", "<Nop>", opts)
+lua/user/keymaps.lua:keymap("n", "Y", "y$", opts)
+lua/user/keymaps.lua:keymap("n", "<C-f>", "<C-d>", opts)
+lua/user/keymaps.lua:keymap("n", "<C-b>", "<C-u>", opts)
+lua/user/keymaps.lua:--keymap("n", "<S-j>", "<C-e>", opts)
+lua/user/keymaps.lua:--keymap("n", "<S-k>", "<C-y>", opts)
+lua/user/keymaps.lua:keymap("n", "<S-h>", ":tabprev<cr>", opts)
+lua/user/keymaps.lua:keymap("n", "<S-l>", ":tabnext<cr>", opts)
+lua/user/keymaps.lua:	keymap("n", "<leader>" .. num, ":" .. num .. "tabnext<cr>", opts)
+lua/user/keymaps.lua:keymap("n", "<C-l>", ":bnext<CR>", opts)
+lua/user/keymaps.lua:keymap("n", "<C-h>", ":bprevious<CR>", opts)
+lua/user/keymaps.lua:vim.keymap.set('n', '<tab>', '<C-w>', opts)
+lua/user/keymaps.lua:vim.keymap.set('n', '<tab><tab>', '<C-w>w', opts)
+lua/user/keymaps.lua:vim.keymap.set('n', '<s-tab>', 'v:lua.shifttab()', { expr = true, noremap = true, })
+lua/user/keymaps.lua:keymap("n", "<C-p>", "<C-i>", opts)
+lua/user/keymaps.lua:keymap("n", "<C-Up>", ":resize +2<CR>", opts)
+lua/user/keymaps.lua:keymap("n", "<C-Down>", ":resize -2<CR>", opts)
+lua/user/keymaps.lua:keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
+lua/user/keymaps.lua:keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+lua/user/keymaps.lua:keymap("i", "jk", "<ESC>", opts)
+lua/user/keymaps.lua:keymap("v", "<", "<gv", opts)
+lua/user/keymaps.lua:keymap("v", ">", ">gv", opts)
+lua/user/keymaps.lua:keymap("v", "<A-j>", ":m .+1<CR>==", opts)
+lua/user/keymaps.lua:keymap("v", "<A-k>", ":m .-2<CR>==", opts)
+lua/user/keymaps.lua:keymap("v", "p", '"_dP', opts) -- doesnt overwrite clipboard when replacing word
+lua/user/keymaps.lua:keymap("x", "J", ":move '>+1<CR>gv-gv", opts)
+lua/user/keymaps.lua:keymap("x", "K", ":move '<-2<CR>gv-gv", opts)
+lua/user/keymaps.lua:keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
+lua/user/keymaps.lua:keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
+lua/user/keymaps.lua:--keymap("n", "<leader>f", "<cmd>Telescope find_files<cr>", opts)
+lua/user/keymaps.lua:--keymap("n", "<leader>g", "<cmd>Telescope live_grep<cr>", opts)
+lua/user/keymaps.lua:--keymap("n", "<leader>d", "<cmd>Telescope live_grep<cr>", opts)
+lua/user/keymaps.lua:keymap("n", "<leader>C", ":Colors<cr>", opts)
+lua/user/keymaps.lua:keymap("n", "<leader>f", ":Files<cr>", opts)
+lua/user/keymaps.lua:keymap("n", "<leader>b", ":Buffers<cr>", opts)
+lua/user/keymaps.lua:-- keymap("n", "<leader>l", ":Lines<cr>", opts)
+lua/user/keymaps.lua:keymap("n", "<leader>`", ":Marks<cr>", opts)
+lua/user/keymaps.lua:keymap("n", "<leader>g", ":Rg<cr>", opts)
+lua/user/keymaps.lua:keymap("n", ":Wa", ":wa", opts)
+lua/user/keymaps.lua:keymap("n", ":WA", ":wa", opts)
+lua/user/keymaps.lua:keymap("n", ":Wq", ":wq", opts)
+lua/user/keymaps.lua:keymap("n", ":WQ", ":wq", opts)
+lua/user/keymaps.lua:keymap("n", ":WQa", ":wqa", opts)
+lua/user/keymaps.lua:keymap("n", ":WQA", ":wqa", opts)
+lua/user/keymaps.lua:keymap("n", "<leader>w", ":WhichKey<cr>", opts)
+lua/user/keymaps.lua:keymap("n", "<leader>n", ":NvimTreeToggle<cr>", opts)
+lua/user/keymaps.lua:keymap("n", "<leader>z", "<cmd>lua vim.lsp.buf.formatting_sync()<cr>", opts)
+lua/user/keymaps.lua:keymap("n", ".", ";", opts)
+lua/user/keymaps.lua:keymap("n", ";", ".", opts)
+lua/user/keymaps.lua:keymap("n", "<Leader>/", ":set hls!<cr>", opts)
+lua/user/keymaps.lua:keymap("n", "<Leader>r", ":w<cr>:!ruby %<cr>", opts)
+lua/user/keymaps.lua:" for <NL>, which was interfering with SiB <Enter> keymapping:
+vim_maps.txt:i  <C-E>       *@<Cmd>call v:lua.cmp.utils.keymap.set_map(1)<CR>
+vim_maps.txt:i  <S-Tab>     * <Cmd>call v:lua.cmp.utils.keymap.set_map(14)<CR>
+vim_maps.txt:c  <C-Space>   * <Cmd>call v:lua.cmp.utils.keymap.set_map(7)<CR>
+vim_maps.txt:i  <C-Space>   * <Cmd>call v:lua.cmp.utils.keymap.set_map(6)<CR>
+vim_maps.txt:c  <C-B>       * <Cmd>call v:lua.cmp.utils.keymap.set_map(4)<CR>
+vim_maps.txt:i  <C-B>       * <Cmd>call v:lua.cmp.utils.keymap.set_map(3)<CR>
+vim_maps.txt:c  <C-E>       * <Cmd>call v:lua.cmp.utils.keymap.set_map(2)<CR>
+vim_maps.txt:c  <C-F>       * <Cmd>call v:lua.cmp.utils.keymap.set_map(9)<CR>
+vim_maps.txt:i  <C-F>       * <Cmd>call v:lua.cmp.utils.keymap.set_map(8)<CR>
+vim_maps.txt:i  <Tab>       * <Cmd>call v:lua.cmp.utils.keymap.set_map(10)<CR>
+vim_maps.txt:i  <NL>        * <Cmd>call v:lua.cmp.utils.keymap.set_map(12)<CR>
+vim_maps.txt:i  <C-K>       * <Cmd>call v:lua.cmp.utils.keymap.set_map(13)<CR>
+vim_maps.txt:i  <CR>        * <Cmd>call v:lua.cmp.utils.keymap.set_map(5)<CR>
+init.lua:require "user.keymaps"
+lua/user/toggleterm.lua:function _G.set_terminal_keymaps()
+lua/user/toggleterm.lua:  vim.api.nvim_buf_set_keymap(0, 't', '<esc>', [[<C-\><C-n>]], opts)
+lua/user/toggleterm.lua:  vim.api.nvim_buf_set_keymap(0, 't', 'jk', [[<C-\><C-n>]], opts)
+lua/user/toggleterm.lua:  vim.api.nvim_buf_set_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)
+lua/user/toggleterm.lua:  vim.api.nvim_buf_set_keymap(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], opts)
+lua/user/toggleterm.lua:  vim.api.nvim_buf_set_keymap(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], opts)
+lua/user/toggleterm.lua:  vim.api.nvim_buf_set_keymap(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], opts)
+lua/user/toggleterm.lua:vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')

@@ -3,13 +3,14 @@ local term_opts = { silent = true }
 term_opts = 4
 
 local keymap = vim.api.nvim_set_keymap
-local set = vim.keymap.set -- these 2 lines are same - keymap.set added in 0.7.0
+-- use keymap, not set, so that i can grep them and see them in 1 place
+-- local set = vim.keymap.set -- these 2 lines are same - keymap.set added in 0.7.0
 
 --https://github.com/nanotee/nvim-lua-guide
 -- allows you to put '<tab>' in a function without it taken literally
 local function t(str) -- t as in 'termcodes'
-    -- Adjust boolean arguments as needed (probably dont need to)
-    return vim.api.nvim_replace_termcodes(str, true, true, true)
+	-- Adjust boolean arguments as needed (probably dont need to)
+	return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
 --Remap space as leader key
@@ -48,8 +49,8 @@ keymap("n", "<S-h>", ":tabprev<cr>", opts)
 keymap("n", "<S-l>", ":tabnext<cr>", opts)
 
 -- <tab>3 goes to tab 3
-for num = 1,9 do
-	keymap("n", "<leader>".. num, ":"..num.."tabnext<cr>", opts)
+for num = 1, 9 do
+	keymap("n", "<leader>" .. num, ":" .. num .. "tabnext<cr>", opts)
 end
 
 ----------------------------------------
@@ -64,12 +65,12 @@ keymap("n", "<C-h>", ":bprevious<CR>", opts)
 
 --tab is now for switching windows. S-tab switches to nvim-tree and back
 function _G.shifttab()
-	return vim.fn.winnr() == 1 and t'<C-w>p' or t'<C-w>t'
+	return vim.fn.winnr() == 1 and t '<C-w>p' or t '<C-w>t'
 end
---TODO make this gel with nvim-tree
+
 vim.keymap.set('n', '<tab>', '<C-w>', opts)
 vim.keymap.set('n', '<tab><tab>', '<C-w>w', opts)
-vim.keymap.set('n','<s-tab>', 'v:lua.shifttab()', {expr = true, noremap = true,})
+vim.keymap.set('n', '<s-tab>', 'v:lua.shifttab()', { expr = true, noremap = true, })
 
 -- Jump list (to newer position) - necesary after remapping tab
 keymap("n", "<C-p>", "<C-i>", opts)
@@ -96,7 +97,7 @@ keymap("v", ">", ">gv", opts)
 -- Move text up and down
 keymap("v", "<A-j>", ":m .+1<CR>==", opts)
 keymap("v", "<A-k>", ":m .-2<CR>==", opts)
-keymap("v", "p", '"_dP', opts)  	-- doesnt overwrite clipboard when replacing word
+keymap("v", "p", '"_dP', opts) -- doesnt overwrite clipboard when replacing word
 
 -- Visual Block --
 -- Move text up and down
@@ -114,15 +115,14 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 ----------------------------------------
 --fzf things
 --check old init.vim for more - also junegunn's init.vim
+keymap("n", "<leader>C", ":Colors<cr>", opts)
+keymap("n", "<leader>f", ":Files<cr>", opts)
+keymap("n", "<leader>b", ":Buffers<cr>", opts)
+-- keymap("n", "<leader>l", ":Lines<cr>", opts)
+keymap("n", "<leader>`", ":Marks<cr>", opts)
+keymap("n", "<leader>g", ":Rg<cr>", opts)
 vim.api.nvim_exec(
-[[
-nnoremap <silent> <expr> <Leader>f (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
-nnoremap <silent> <Leader>C        :Colors<CR>
-nnoremap <silent> <Leader>b        :Buffers<CR>
-"nnoremap <silent> <Leader>l        :Lines<CR>
-nnoremap <silent> <Leader>`        :Marks<CR>
-nnoremap <silent> <Leader>g        :Rg<CR>
-
+	[[
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-i': 'split',
@@ -172,7 +172,7 @@ keymap("n", "<Leader>/", ":set hls!<cr>", opts)
 keymap("n", "<Leader>r", ":w<cr>:!ruby %<cr>", opts)
 
 vim.api.nvim_exec(
-[[
+	[[
 packadd termdebug
 let g:termdebug_wide=1
 nnoremap <Leader>t  :Termdebug a.out<cr>A
@@ -200,10 +200,6 @@ nnoremap <Leader>x :s/[aAeE]\@<!y/x/g<cr>
 :  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
 :  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 :augroup END
-
-"windows split in a more harmonious way
-set splitbelow
-set splitright
 
 
 " https://github.com/zenbro/dotfiles/blob/master/.nvimrc
@@ -244,7 +240,7 @@ nnoremap <silent> <Leader>jj :call JumpOrOpenNewSplit('j', ':rightbelow split', 
 " mouse
 silent! set ttymouse=xterm2
 set mouse=a
-]],true)
+]], true)
 
 --TODO
 --Seeing is believing, ALE, maybe more fzf
