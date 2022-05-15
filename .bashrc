@@ -28,6 +28,7 @@ alias bxc='bundle exec bin/rails console'
 alias ga='git add -A'
 alias gcm='git commit -m'
 alias glo="git log --oneline"
+alias gs="git status"
 
 
 g() {
