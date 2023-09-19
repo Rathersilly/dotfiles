@@ -60,7 +60,7 @@ ln -s ~/dotfiles/.bashrc ~/.bashrc
 # do ruby stuff
 # see odin project maybe, rather than using this
 # https://www.theodinproject.com/lessons/ruby-installing-ruby
-# sudo apt install gcc make libssl-dev libreadline-dev zlib1g-dev libsqlite3-dev
+# sudo apt install gcc make libssl-dev libreadline-dev zlib1g-dev libsqlite3-dev build-essential
 # git clone https://github.com/rbenv/rbenv.git ~/.rbenv
 # echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
 # echo 'eval "$(rbenv init -)"' >> ~/.bashrc
@@ -91,9 +91,17 @@ ln -s ~/dotfiles/.bashrc ~/.bashrc
 
 # additional programs?
 # gimp git-cola 
+# gimp alternatives: photopea (online), kolourpaint
 # silversearcher-ag
 # rg
 # valgrind
+# parcellite # clipboard manager
+
+# to use g++ (added it earlier, when installing ruby)
+# rails also needs node installed
+#apt install build-essential nodejs
+
+
 
 # additional instructions if this is vm
 

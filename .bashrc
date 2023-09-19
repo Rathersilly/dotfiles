@@ -1,16 +1,19 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
+
 alias vi=nvim
-EDITOR=nvim
-export EDITOR
+alias vis='nvim -S'
+export EDITOR=nvim
 
 alias py=python3
 alias dr='dragonruby .'
+export PATH="$PATH:~/dragonruby-linux-amd64"
 # VS code freezes occasionally without this
 alias code='code --disable-gpu'
 
 alias untar='tar -zxvf '
+alias ppath='tr ":" "\n" <<< "$PATH"' 			# pretty print path variable
 
 # alias rails='bin/rails'
 alias rs='rails server'
@@ -39,6 +42,10 @@ g() {
 	fi
 }
 
+# entering a symlinked directory takes you to the proper file path
+# https://superuser.com/questions/1312196/linux-symbolic-links-how-to-go-to-the-pointed-to-directory
+function cdl { local dir=$(readlink -e $1); [[ -n "$dir" ]] && cd $dir; }
+
 function mcd() {
 	mkdir -p "$1" && cd "$1";
 }
@@ -50,10 +57,13 @@ alias ....='cd ../../..'
 alias mkdir='mkdir -pv'
 alias h='history'
 alias j='jobs -l'
-alias diff='colordiff'
 alias rm='rm -I --preserve-root'
 alias ff='firefox'
 alias chrome='google-chrome'
+if [[ $(command -v colordiff) ]]; then
+		alias diff='colordiff'
+fi
+
 
 # add Yarn to PATH
 export PATH="$PATH:/opt/yarn-[version]/bin"
@@ -175,6 +185,7 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
@@ -183,6 +194,3 @@ eval "$(rbenv init -)"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"

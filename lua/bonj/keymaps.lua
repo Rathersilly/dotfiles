@@ -16,11 +16,30 @@ end
 --Remap space as leader key
 keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.maplocalleader = "\\"
+
+keymap("n", "<leader>i", ":Neorg index<cr>", opts)
+
 
 --Make Y behave like other capitals
 keymap("n", "Y", "y$", opts)
 
+--Make leader y yank to clipboard - must have xclip installed and clipboard+=unnamed+ in options.lua
+keymap("v", "<leader>y", "\"+y", opts)
+keymap("n", "<leader>Y", [["+Y]], opts)
+keymap("n", "<leader>y", [["+y]], opts)
+-- would like to do the following but conflicts with change x to y
+-- keymap("n", "<leader>yy", "\"+yy", opts)
+
+--Neorg stuff
+keymap("n", "<leader>on", ":Neorg workspace notes<cr>", opts)
+keymap("n", "<leader>oi", ":Neorg index<cr>", opts)
+keymap("n", "<C-j>", '/^\\s*\\*[^*]<cr>', opts)
+keymap("n", "<C-k>", '?^\\s*\\*[^*]<cr>', opts)
+
+-- from theprimeagen
+keymap("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], opts)
+keymap("n", "<leader>X", "<cmd>!chmod +x %<CR>", opts)
 ----------------------------------------:was
 -- -- Modes
 --   normal_mode = "n",
@@ -64,11 +83,21 @@ keymap("n", "<C-h>", ":bprevious<CR>", opts)
 ---- Window things
 
 --tab is now for switching windows. S-tab switches to nvim-tree and back
+--this prev_winid is needed to help nvim-tree open file in prev window
+
+function _G.set_prev_winid()
+	_G.prev_winid = vim.api.nvim_get_current_win()
+end
+
+	_G.prev_winid = vim.api.nvim_get_current_win()
 function _G.shifttab()
+	_G.prev_winid = vim.api.nvim_get_current_win()
+	--<C-W>p goes to preview window and back
 	return vim.fn.winnr() == 1 and t '<C-w>p' or t '<C-w>t'
 end
 
-vim.keymap.set('n', '<tab>', '<C-w>', opts)
+--vim.keymap.set('n', '<tab>', ":lua set_prev_winid() <cr> <C-w>", opts)
+vim.keymap.set('n', '<tab>', "<C-w>", opts)
 vim.keymap.set('n', '<tab><tab>', '<C-w>w', opts)
 vim.keymap.set('n', '<s-tab>', 'v:lua.shifttab()', { expr = true, noremap = true, })
 
@@ -80,6 +109,9 @@ keymap("n", "<C-Up>", ":resize +2<CR>", opts)
 keymap("n", "<C-Down>", ":resize -2<CR>", opts)
 keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+-- for some reason these only work if editing a buffer, otherwise they just vsplit once
+keymap("n", "<C-w>4", ":vsplit<cr> :split<cr> <c-w>h :split<cr>", opts)
+keymap("n", "<tab>4", ":vsplit<cr> :split<cr> <c-w>h :split<cr>", opts)
 
 
 ----------------------------------------
@@ -108,13 +140,14 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 
 --TODO check out the better terminal navigation keys
 --Telescope
---keymap("n", "<leader>f", "<cmd>Telescope find_files<cr>", opts)
---keymap("n", "<leader>g", "<cmd>Telescope live_grep<cr>", opts)
---keymap("n", "<leader>d", "<cmd>Telescope live_grep<cr>", opts)
+keymap("n", "<leader>f", "<cmd>Telescope find_files<cr>", opts)
+keymap("n", "<leader>b", "<cmd>Telescope buffers<cr>", opts)
+keymap("n", "<leader>d", "<cmd>Telescope grep_string<cr>", opts)
+keymap("n", "<leader>g", "<cmd>Telescope live_grep<cr>", opts)
 
 ----------------------------------------
 --fzf things
---check old init.vim for more - also junegunn's init.vim
+--[[check old init.vim for more - also junegunn's init.vim
 keymap("n", "<leader>C", ":Colors<cr>", opts)
 keymap("n", "<leader>f", ":Files<cr>", opts)
 keymap("n", "<leader>b", ":Buffers<cr>", opts)
@@ -127,8 +160,10 @@ let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-i': 'split',
   \ 'ctrl-s': 'vsplit' }
-]],
+--,
+--
 true)
+]]
 
 keymap("n", ":Wa", ":wa", opts)
 keymap("n", ":WA", ":wa", opts)
@@ -145,7 +180,7 @@ keymap("n", "<leader>w", ":WhichKey<cr>", opts)
 ----------------------------------------
 -- Nvimtree
 keymap("n", "<leader>n", ":NvimTreeToggle<cr>", opts)
--- other keybinds set in nvimtree.lus
+-- other keybinds set in nvimtree.lua
 
 ----------------------------------------
 -- Null ls
@@ -171,6 +206,7 @@ keymap("n", "<Leader>/", ":set hls!<cr>", opts)
 --probably remap this to \m and depend on filetype - same cmd for make
 keymap("n", "<Leader>r", ":w<cr>:!ruby %<cr>", opts)
 
+--convert this to lua at some point
 vim.api.nvim_exec(
 	[[
 packadd termdebug
@@ -240,6 +276,7 @@ nnoremap <silent> <Leader>jj :call JumpOrOpenNewSplit('j', ':rightbelow split', 
 " mouse
 silent! set ttymouse=xterm2
 set mouse=a
+
 ]], true)
 
 --TODO
