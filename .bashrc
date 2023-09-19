@@ -2,6 +2,8 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+export PATH="$PATH:$HOME/.local/bin"
+
 alias vi=nvim
 alias vis='nvim -S'
 export EDITOR=nvim
