@@ -4,6 +4,7 @@
 
 export PATH="$PATH:$HOME/.local/bin"
 
+alias gg='g++ -std=c++17'
 alias vi=nvim
 alias vis='nvim -S'
 export EDITOR=nvim

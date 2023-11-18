@@ -1,0 +1,42 @@
+require 'pathname'
+require 'fileutils'
+require 'colorize'
+
+USERNAME = 'rsil'
+home_path = Pathname.new("/home/#{USERNAME}")
+dotfile_path = home_path + 'dotfiles'
+cwd = Pathname.getwd
+
+nvim_config_path = home_path + '.config/nvim'
+# need list of files to backup and link
+#
+origin_dir = 'test'
+target_dir = 'dirtest'
+origin_path = cwd + origin_dir
+target_path = home_path + target_dir
+
+directories = []
+def backup_and_link(*path_array)
+  return unless path_array[0].exist?
+
+  puts 'backup_and_link'.green
+  p path_array
+  path_array.each do |path|
+    begin
+    rescue StandardError
+    end
+    if path.directory?
+      puts 'recursing'.light_blue
+      backup_and_link(*path.children)
+    else
+      puts 'not recursing'.yellow
+      if path.file?
+        puts "creating #{path}.bak"
+        FileUtils.mv(path, path + '.bak')
+      end
+
+    end
+  end
+end
+paths = [cwd]
+backup_and_link(origin_path)
